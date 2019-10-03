@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
@@ -13,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,7 +36,7 @@ public class ComboBoxExperiments extends Application  {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        primaryStage.setTitle("ComboBox Experiment 1");
+        primaryStage.setTitle("ComboBox Experiment Ekaitz");
 
         ComboBox comboBox = new ComboBox();
         listViewOfArgazki = new ListView<>();
@@ -54,28 +56,28 @@ public class ComboBoxExperiments extends Application  {
         Map<String, List<Argazkia>> bildumaMap = new HashMap<>();
 
         bildumaMap.put("Kotxeak", List.of(
-                new Argazkia("Lamborghini", ""),
-                new Argazkia("Ferrari", ""),
-                new Argazkia("Audi", ""),
-                new Argazkia("Mercedes", ""),
-                new Argazkia("Volvo", "")
+                new Argazkia("Lamborghini", "lambor.jpg"),
+                new Argazkia("Ferrari", null),
+                new Argazkia("Audi", "abt-audi-rs5-r.jpg"),
+                new Argazkia("Mercedes", "mercedes-amg-a-cla-45-2019-0619-020_1440x655c.jpg"),
+                new Argazkia("Volvo", "2020-volvo-xc60-exterior-056b.png")
         ));
 
         bildumaMap.put("Futbola", List.of(
-                new Argazkia("Leo Messi", ""),
+                new Argazkia("Leo Messi", "messi.jpg"),
                 new Argazkia("San Mames", "San-Mames.jpg"),
                 new Argazkia("Aduriz", "aduriz.jpeg"),
-                new Argazkia("Joao Felix", "")
+                new Argazkia("Joao Felix", "joaoFelix.jpg"),
+                new Argazkia("Ronaldo", null)
         ));
 
         bildumaMap.put("Filmak", List.of(
-                new Argazkia("Star Wars", ""),
-                new Argazkia("Avengers", ""),
-                new Argazkia("Spiderman", "")
+                new Argazkia("Star Wars", "694px-Star_Wars_Logo.svg.png"),
+                new Argazkia("Avengers", "The_avengers_logo.png"),
+                new Argazkia("Interstellar", null),
+                new Argazkia("Spiderman", "spider.jpg")
         ));
 
-
-        // poner una imagen predeterminada para que aparezca al principio de la applicacion
 
 
 
@@ -97,92 +99,40 @@ public class ComboBoxExperiments extends Application  {
 
             // Ez dagoenean sortu argazki bat ez dagoela esateko --> errorea ez emateko
             if (observable.getValue() == null) return;
-
-            // SARTU ARGAZKIAK RESOURCES-EN
-            String fitx = observable.getValue().getFitx();
-
-            try {
-                imageView.setImage(lortuIrudia(fitx /* 48x48 */));
-                imageView.setFitHeight(100);
-                imageView.setFitWidth(100);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        });
-
-
-        /*
-        FileInputStream input = new FileInputStream("/home/ekaitzhara/Imágenes/thumb-1920-707960.png");
-        Image image = new Image(input);
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
-        */
-
-
-        //comboBox.getSelectionModel().selectFirst();
-
-        /*
-        comboBox.setOnAction(e -> {
-            App bildum = (App) comboBox.getValue();
-            String izenak[] = bildum.getIzenArgazkiak();
-            argazkiak.getItems().clear();
-            for (int i = 0; i < izenak.length; i++)
-                argazkiak.getItems().add(izenak[i]);
-
-            String idak[] = bildum.getIdArgazkiak();
-            FileInputStream input = null;
-            Image image;
-
-            if (idak[0]!=null) {
+            else if (observable.getValue().getFitx() == null) {
                 try {
-                    input = new FileInputStream("/home/ekaitzhara/Imágenes/" + idak[0]);
-                } catch (FileNotFoundException ex) {
-                    ex.printStackTrace();
+                    imageView.setImage(lortuIrudia("image-not-found.png"));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                image = new Image(input);
-                imageView = new ImageView(image);
-                imageView.setImage(image);
-            }
-        });
+            } else {
+                // SARTU ARGAZKIAK RESOURCES-EN
+                String fitx = observable.getValue().getFitx();
 
-         */
-
-
-
-        /*
-        argazkiak.setOnAction(e -> {
-            String izenak[] = bildum.getIzenArgazkiak();
-            String idak[] = bildum.getIdArgazkiak();
-            String nahiDuzuna = argazkiak.getValue();
-            int pos=0;
-            boolean aurkituta = false;
-            while (!aurkituta) {
-                if (izenak[pos].equals(nahiDuzuna))
-                    aurkituta=true;
-            }
-            FileInputStream input = null;
-            Image image;
-            if (idak[pos]!=null) {
                 try {
-                    input = new FileInputStream("/home/ekaitzhara/Imágenes/" + idak[i]);
-                } catch (FileNotFoundException ex) {
-                    ex.printStackTrace();
+                    imageView.setImage(lortuIrudia(fitx /* 48x48 */));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                image = new Image(input);
-                imageView = new ImageView(image);
-                imageView.setImage(image);
             }
-
+            imageView.setFitHeight(150);
+            imageView.setFitWidth(200);
         });
-         */
 
 
-        //HBox hbox = new HBox(comboBox);
-        VBox vbox = new VBox(comboBox, listViewOfArgazki, imageView);
+        HBox hbuttons = new HBox();
+        javafx.scene.control.Button botoia = new javafx.scene.control.Button("Exit");
+        botoia.setOnAction( e -> {
+            primaryStage.close();
+        });
 
-        Scene scene = new Scene(vbox, 400, 240);
+        hbuttons.getChildren().add(botoia);
+        hbuttons.setAlignment(Pos.CENTER_RIGHT);
+
+
+        VBox vbox = new VBox(comboBox, listViewOfArgazki, imageView, hbuttons);
+
+        Scene scene = new Scene(vbox, 500, 340);
         primaryStage.setScene(scene);
 
 

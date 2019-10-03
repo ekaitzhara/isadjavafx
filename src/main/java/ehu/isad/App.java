@@ -7,6 +7,8 @@ import java.lang.reflect.Array;
 
 public class App {
 
+    // Hau nire lehen inplementazioa izan zen, baina Juanan-ena askoz errazagoa zen eginkizun honetarako
+
     private String bildumaIzena;
     private String idArgazkiak[];
     private String izenArgazkiak[];
