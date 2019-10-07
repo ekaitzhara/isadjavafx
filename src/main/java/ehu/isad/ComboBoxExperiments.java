@@ -1,6 +1,7 @@
 package ehu.isad;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -42,7 +43,7 @@ public class ComboBoxExperiments extends Application  {
         listViewOfArgazki = new ListView<>();
         imageView = new ImageView();
 
-        List<String> bildumak = List.of("Kotxeak", "Futbola", "Filmak");
+        List<String> bildumak = List.of("Autoak", "Futbola", "Filmak");
 
         ObservableList<Bilduma> bildumaList = FXCollections.observableArrayList();
 
@@ -55,7 +56,7 @@ public class ComboBoxExperiments extends Application  {
 
         Map<String, List<Argazkia>> bildumaMap = new HashMap<>();
 
-        bildumaMap.put("Kotxeak", List.of(
+        bildumaMap.put("Autoak", List.of(
                 new Argazkia("Lamborghini", "lambor.jpg"),
                 new Argazkia("Ferrari", null),
                 new Argazkia("Audi", "abt-audi-rs5-r.jpg"),
@@ -120,6 +121,27 @@ public class ComboBoxExperiments extends Application  {
         });
 
 
+        ComboBox hizkuntzaAldatu = new ComboBox();
+        List<String> hizkuntzak = List.of("Euskara", "Castellano", "English");
+        ObservableList<String> hizkuntzaList = FXCollections.observableArrayList();
+
+        hizkuntzak.forEach((elem) -> {
+            hizkuntzaList.add(elem);
+        });
+
+        hizkuntzaAldatu.setItems(hizkuntzaList);
+        hizkuntzaAldatu.setEditable(false);
+
+        hizkuntzaAldatu.setOnAction( e -> {
+            String h = (String) hizkuntzaAldatu.getValue();
+            if(h.equals("English"))
+                Bilduma.aldatuHizkuntza("en","UK");
+            else if(h.equals("Castellano"))
+                Bilduma.aldatuHizkuntza("es","ES");
+            else
+                Bilduma.aldatuHizkuntza(null,null);
+        });
+
         HBox hbuttons = new HBox();
         javafx.scene.control.Button botoia = new javafx.scene.control.Button("Exit");
         botoia.setOnAction( e -> {
@@ -130,11 +152,10 @@ public class ComboBoxExperiments extends Application  {
         hbuttons.setAlignment(Pos.CENTER_RIGHT);
 
 
-        VBox vbox = new VBox(comboBox, listViewOfArgazki, imageView, hbuttons);
+        VBox vbox = new VBox(comboBox, listViewOfArgazki, imageView, hizkuntzaAldatu, hbuttons);
 
         Scene scene = new Scene(vbox, 500, 340);
         primaryStage.setScene(scene);
-
 
 
         primaryStage.show();
